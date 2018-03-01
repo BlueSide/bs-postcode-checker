@@ -9,9 +9,12 @@
  * License: GPL2
  */
 
+require_once( plugin_dir_path(dirname(__FILE__)).'/bs-postcode-checker/view.php' );
+
 function shortcode_callback()
 {
-    include plugin_dir_path(dirname(__FILE__)).'/bs-postcode-checker/view.php';
+    //include plugin_dir_path(dirname(__FILE__)).'/bs-postcode-checker/view.php';
+    return render_postcode_checker();
 }
 add_shortcode( 'bs-postcode-checker', 'shortcode_callback' );
 
@@ -38,11 +41,9 @@ function postcode_check()
 	die();
 }
 
-
 /*
  * Admin page
  */
-
 add_action( 'admin_menu', 'plugin_menu' );
 function plugin_menu() {
     add_options_page( 'Postcode Checker', 'Postcode Checker', 'manage_options', 'bs-postcode-checker', 'options_page' );
@@ -64,7 +65,7 @@ function section_render()
 {
     echo 'Open het Excel bestand en plak in het veld hier onder de inhoud.';
 }
-olkamsdvclkmfadlksdfm
+
 function postcodes_render()
 {
     $setting = esc_attr( get_option( 'postcodes' ) );

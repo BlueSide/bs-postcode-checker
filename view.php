@@ -4,8 +4,8 @@
     <div id="pc-not-found">De postcode is niet gevonden!</div>
     <div id="pc-found">De postcode is niet gevonden!</div>
     <!-- <form> -->
-         <input type="text" id="postcode" class="bs-postcode-input"/>
-         <button type="button" class="check-button">Check!</button>
+         <input type="text" id="postcode" class="uk-input"/>
+         <button type="button" class="uk-button uk-button-primary">Check!</button>
     <!-- </form> -->
 </div>
 <?php ';}

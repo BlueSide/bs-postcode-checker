@@ -65,11 +65,6 @@ function section_render()
     echo 'Open het Excel bestand en plak in het veld hier onder de inhoud.';
 }
 
-function test($arr)
-{
-    return $arr;
-}
-
 function postcodes_render()
 {
     $setting = esc_attr( get_option( 'postcodes' ) );

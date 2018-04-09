@@ -1,73 +1,82 @@
 <?php
+
 /**
- * Plugin Name: Blue Side Postcode Checker
- * Plugin URI: http://www.blueside.nl
- * Description: Let the user check a postal code against an uploaded list
- * Version: 1.0.0
- * Author: Blue Side
- * Author URI: http://www.blueside.nl
- * License: GPL2
+ * The plugin bootstrap file
+ *
+ * This file is read by WordPress to generate the plugin information in the plugin
+ * admin area. This file also includes all of the dependencies used by the plugin,
+ * registers the activation and deactivation functions, and defines a function
+ * that starts the plugin.
+ *
+ * @link              https://www.blueside.nl/
+ * @since             1.0.0
+ * @package           Bs_Postcode_Checker
+ *
+ * @wordpress-plugin
+ * Plugin Name:       Blue Side Postcode Checker
+ * Plugin URI:        https://www.blueside.nl/
+ * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Version:           1.0.0
+ * Author:            Marlon Peeters
+ * Author URI:        https://www.blueside.nl/
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       bs-postcode-checker
+ * Domain Path:       /languages
  */
 
-require_once( plugin_dir_path(dirname(__FILE__)).'/bs-postcode-checker/view.php' );
-
-function shortcode_callback()
-{
-    //include plugin_dir_path(dirname(__FILE__)).'/bs-postcode-checker/view.php';
-    return render_postcode_checker();
-}
-add_shortcode( 'bs-postcode-checker', 'shortcode_callback' );
-
-add_action( 'wp_enqueue_scripts', 'ajax_test_enqueue_scripts' );
-function ajax_test_enqueue_scripts() {
-    wp_enqueue_script( 'postcode_checker', plugins_url( '/script.js', __FILE__ ), array('jquery'), '1.0', true );
-    wp_localize_script( 'postcode_checker', 'postcode_checker', array('ajax_url' => admin_url( 'admin-ajax.php' )));
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
 }
 
-add_action( 'wp_ajax_postcodecheck', 'postcode_check' );
-
-function postcode_check()
-{
-    $csvrows = explode("\n", get_option('postcodes'));
-    $postcodes = array();
-    foreach($csvrows as $row)
-    {
-        $comp = preg_split("/[\t]/", $row);
-        $postcodes[$comp[0]] = $comp[1];
-    }
-	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) { 
-        echo trim($postcodes[$_POST['postcode']]);
-	}
-	die();
-}
-
-/*
- * Admin page
+/**
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Rename this for your plugin and update it as you release new versions.
  */
-add_action( 'admin_menu', 'plugin_menu' );
-function plugin_menu() {
-    add_options_page( 'Postcode Checker', 'Postcode Checker', 'manage_options', 'bs-postcode-checker', 'options_page' );
+define( 'PLUGIN_NAME_VERSION', '1.0.0' );
+
+/**
+ * The code that runs during plugin activation.
+ * This action is documented in includes/class-bs-postcode-checker-activator.php
+ */
+function activate_bs_postcode_checker() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-bs-postcode-checker-activator.php';
+	Bs_Postcode_Checker_Activator::activate();
 }
 
-function options_page()
-{
-    include plugin_dir_path(dirname(__FILE__)).'bs-postcode-checker/admin-view.php';
+/**
+ * The code that runs during plugin deactivation.
+ * This action is documented in includes/class-bs-postcode-checker-deactivator.php
+ */
+function deactivate_bs_postcode_checker() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-bs-postcode-checker-deactivator.php';
+	Bs_Postcode_Checker_Deactivator::deactivate();
 }
 
-add_action( 'admin_init', 'my_admin_init' );
-function my_admin_init() {
-    register_setting( 'postcode-settings-group', 'postcodes' );
-    add_settings_section( 'section-one', 'Postcodes', 'section_render', 'bs-postcode-checker' );
-    add_settings_field( 'postcodes', '', 'postcodes_render', 'bs-postcode-checker', 'section-one' );
-}
+register_activation_hook( __FILE__, 'activate_bs_postcode_checker' );
+register_deactivation_hook( __FILE__, 'deactivate_bs_postcode_checker' );
 
-function section_render()
-{
-    echo 'Open het Excel bestand en plak in het veld hier onder de inhoud.';
-}
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+require plugin_dir_path( __FILE__ ) . 'includes/class-bs-postcode-checker.php';
 
-function postcodes_render()
-{
-    $setting = esc_attr( get_option( 'postcodes' ) );
-    echo "<textarea name='postcodes' rows='40' cols='60'>$setting</textarea>";
+/**
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function run_bs_postcode_checker() {
+
+	$plugin = new Bs_Postcode_Checker();
+	$plugin->run();
+
 }
+run_bs_postcode_checker();

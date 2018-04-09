@@ -13,4 +13,13 @@
  */
 ?>
 
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
+<div class="wrap">
+    <h2>Blue Side Postcode Checker</h2>
+    <form action="options.php" method="POST">
+        <?php
+        settings_fields( 'postcode-settings-group' );
+        do_settings_sections( 'bs-postcode-checker' );
+        submit_button();
+        ?>
+    </form>
+</div>

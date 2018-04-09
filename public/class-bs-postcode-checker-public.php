@@ -88,8 +88,10 @@ class Bs_Postcode_Checker_Public {
             $comp = preg_split("/[\t]/", $row);
             $postcodes[$comp[0]] = $comp[1];
         }
-            echo trim($postcodes[$_POST['postcode']]);
-	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) { 
+        
+        echo trim($postcodes[$_POST['postcode']]);
+
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) { 
             die();
 	}
     }

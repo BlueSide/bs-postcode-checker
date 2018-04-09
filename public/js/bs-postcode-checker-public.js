@@ -1,32 +1,54 @@
 (function( $ ) {
-	'use strict';
+    'use strict';
 
-	/**
-	 * All of the code for your public-facing JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note: It has been assumed you will write jQuery code here, so the
-	 * $ function reference has been prepared for usage within the scope
-	 * of this function.
-	 *
-	 * This enables you to define handlers, for when the DOM is ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * When the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and/or other possibilities.
-	 *
-	 * Ideally, it is not considered best practise to attach more than a
-	 * single DOM-ready or window-load handler for a particular page.
-	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
-	 */
+    $( window ).load(function() {
 
+        
+        var regexpCheckPostcodeNL = /^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-z]{2}$/i;
+
+        jQuery("#pc-error").hide();
+        jQuery("#pc-not-found").hide();
+        jQuery("#pc-found").hide();
+
+        jQuery( document ).on( 'click', '.check-button', function() {
+
+            jQuery("#pc-error").hide();
+            jQuery("#pc-not-found").hide();
+            jQuery("#pc-found").hide();
+
+            // Normalize and validate
+            var normalizedInput = jQuery('#postcode').val().replace(/ /g,'').toUpperCase();
+            if(!isValidPostcode(normalizedInput))
+            {
+                jQuery("#pc-error").show();
+                return;
+            }
+            
+            jQuery.ajax({
+                url : postcode_checker.ajax_url,
+                type : 'post',
+                data : {
+                    action : 'postcodecheck',
+                    postcode : normalizedInput
+                },
+                success : function( response ) {
+                    if(response === "")
+                    {
+                        jQuery("#pc-not-found").show();                
+                    }
+                    else
+                    {
+                        jQuery("#pc-found").html("Jouw postcode matcht met Warmtenet " + response + "!");
+                        jQuery("#pc-found").show();
+                    }
+                }
+            });
+            
+        });
+
+        function isValidPostcode(input)
+        {
+            return regexpCheckPostcodeNL.test(input);
+        }
+    });
 })( jQuery );

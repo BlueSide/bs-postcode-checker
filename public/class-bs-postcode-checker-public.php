@@ -71,6 +71,17 @@ class Bs_Postcode_Checker_Public {
     public function enqueue_scripts()
     {
 	wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/bs-postcode-checker-public.js', array( 'jquery' ), $this->version, false );
+        wp_localize_script( $this->plugin_name, 'postcode_checker', array('ajax_url' => admin_url( 'admin-ajax.php' )));
+    }
+
+    /**
+     * 
+     *
+     * @since    1.0.0
+     */
+    public function postcode_check()
+    {
+        
     }
 
     public function shortcode_callback()

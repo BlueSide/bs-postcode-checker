@@ -55,7 +55,14 @@ class Bs_Postcode_Checker_Admin {
 
     public function add_menu()
     {
-        add_menu_page( 'Postcode Checker', 'Postcode Checker', 'manage_options', $this->plugin_name.'-settings', array($this, 'options_page'));
+        add_menu_page(
+            'Postcode Checker',
+            'Postcode Checker',
+            'manage_options',
+            $this->plugin_name.'-settings',
+            array($this, 'options_page'),
+            'dashicons-location-alt'
+        );
     }
 
     public function admin_init()

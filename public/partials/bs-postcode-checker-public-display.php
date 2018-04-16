@@ -15,9 +15,9 @@
 <div class="bs-postcode-form">
     <div id="pc-error" style="display:none">Geen geldige postcode!</div>
     <div id="pc-not-found" style="display:none">De postcode is niet gevonden!</div>
-    <div id="pc-found" style="display:none">De postcode is niet gevonden!</div>
-    <!-- <form> -->
-    <input type="text" id="postcode" class="uk-input"/>
-    <button type="button" class="check-button uk-button uk-button-primary">Check!</button>
-    <!-- </form> -->
+    <div id="pc-found" style="display:none"></div>
+    <form>
+        <input type="text" id="postcode" class="uk-input"/>
+        <button type="button" class="check-button uk-button uk-button-primary">Check!</button>
+    </form>
 </div>

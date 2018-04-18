@@ -46,7 +46,7 @@
                     }
                     else
                     {
-                        $("#pc-found").html("Jouw postcode matcht met warmtenet " + response + "!");
+                        $("#pc-found").html("Mooi, Warmte Eindhoven levert op dit adres!");
                         $("#pc-found").show();
                     }
                     $("#sc-spinner").hide();

@@ -16,7 +16,9 @@
         
         $(document).on( 'click', '.check-button', checkPostcode);
 
-        function checkPostcode() {
+        function checkPostcode() 
+        {
+            $("#sc-spinner").show();
             $("#pc-error").hide();
             $("#pc-not-found").hide();
             $("#pc-found").hide();
@@ -26,6 +28,7 @@
             if(!isValidPostcode(normalizedInput))
             {
                 $("#pc-error").show();
+                $("#sc-spinner").hide();
                 return;
             }
             
@@ -36,16 +39,23 @@
                     action : 'postcodecheck',
                     postcode : normalizedInput
                 },
-                success : function( response ) {
+                success : function(response) {
                     if(response === "")
                     {
                         $("#pc-not-found").show();                
                     }
                     else
                     {
-                        $("#pc-found").html("Jouw postcode matcht met Warmtenet " + response + "!");
+                        $("#pc-found").html("Mooi, Warmte Eindhoven levert op dit adres!");
                         $("#pc-found").show();
                     }
+                    $("#sc-spinner").hide();
+            
+                },
+                error: function(error)
+                {
+                    console.error(error);
+                    $("#sc-spinner").hide();
                 }
             });
             

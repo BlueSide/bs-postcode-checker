@@ -19,15 +19,16 @@
         function checkPostcode() 
         {
             $("#sc-spinner").show();
-            $("#pc-error").hide();
+            $("#pc-not-valid").hide();
             $("#pc-not-found").hide();
             $("#pc-found").hide();
+            $("#pc-error").hide();
 
             // Normalize and validate
             var normalizedInput = $('#postcode').val().replace(/ /g,'').toUpperCase();
             if(!isValidPostcode(normalizedInput))
             {
-                $("#pc-error").show();
+                $("#pc-not-valid").show();
                 $("#sc-spinner").hide();
                 return;
             }
@@ -55,6 +56,7 @@
                 error: function(error)
                 {
                     console.error(error);
+                    $("#pc-error").show();
                     $("#sc-spinner").hide();
                 }
             });
